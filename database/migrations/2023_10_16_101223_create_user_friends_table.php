@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('sender_id');
             $table->unsignedBigInteger('receiver_id');
+            $table->string('email');
+            $table->string('token')->nullable();
             $table->tinyInteger('is_friend')->default(0)->comment('0 = no request sent, 1 = request sent, 2 = request accepted');
             $table->timestamps();
         });
