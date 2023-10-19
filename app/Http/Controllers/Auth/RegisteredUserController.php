@@ -21,7 +21,8 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        if (! request()->hasValidSignature()) {
+        // dd(request()->all());
+        if (request()->has('signature') && (!request()->hasValidSignature())) {
             abort(403);
         }
 
@@ -51,7 +52,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        if($request->has('sender_id'))
+        if($request->has('sender_id') && !is_null($request->sender_id))
         {
             $friendRequest = FriendRequest::where('sender_id',$request->sender_id)->where('token',$request->token)->first();
             
@@ -60,6 +61,8 @@ class RegisteredUserController extends Controller
                 'receiver_id' => $user->id,
                 'token' => null
             ]);
+
+     
         }
 
         event(new Registered($user));

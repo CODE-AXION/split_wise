@@ -16,6 +16,21 @@ class FriendRequest extends Model
         return $this->belongsTo(User::class,'sender_id');
     }
 
+    public function getFriendName()
+    {
+        // dd($this->sender);
+        if($this->sender){
+           
+            return $this->receiver->name;
+        }
+
+        if($this->receiver){
+            
+            return $this->receiver->name;
+        }
+        // return $this->sender ? $this->sender->name :  $this->receiver->name;
+    }
+
     public function receiver()
     {
         return $this->belongsTo(User::class,'receiver_id');

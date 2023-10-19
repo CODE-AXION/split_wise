@@ -16,9 +16,13 @@ class SendFriendRequest extends Notification
      *
      * @return void
      */
-    public function __construct()
+
+    protected $url;
+    protected $user;
+    public function __construct($url,$user)
     {
-        //
+        $this->url = $url;
+        $this->user = $user;
     }
 
     /**
@@ -41,8 +45,8 @@ class SendFriendRequest extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
+                    ->line('You Have Received a friend request from Split Wise Application of This user: '. $this->user->name )
+                    ->action('Accept Request', $this->url)
                     ->line('Thank you for using our application!');
     }
 

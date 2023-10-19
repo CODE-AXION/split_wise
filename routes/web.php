@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FriendRequestController;
 use App\Http\Controllers\DashboardController;
-
+use App\Http\Controllers\ExpenseController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,10 +20,42 @@ use App\Http\Controllers\DashboardController;
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/create-friend-request', [FriendRequestController::class, 'createRequest'])->middleware('auth')->name('create.request');
-Route::post('/send-friend-request', [FriendRequestController::class, 'sendRequest'])->middleware('auth')->name('send.request');
-Route::post('/accept-friend-receiver', [FriendRequestController::class, 'acceptRequest'])->middleware('auth')->name('accept.request');
+// Route::get('/users', [FriendRequestController::class, 'allUsers'])->middleware('auth')->name('all.users');
 
+Route::middleware(['auth'])->group(function () {
+
+    Route::controller(FriendRequestController::class)->group(function () {
+        
+        // Friend Request Routes
+        Route::get('/create-friend-request', 'createRequest')->name('create.request');
+        Route::post('/send-friend-request', 'sendRequest')->name('send.request');
+        Route::post('/accept-friend-receiver', 'acceptRequest')->name('accept.request');
+    });
+
+
+    // Settle Up Routes
+    Route::prefix('/settle-up')->controller(ExpenseController::class)->group(function () {
+        Route::get('/{expense}',  'createSettleUp')->name('create.settle.up.expense');
+        Route::post('/pay/{expense}', 'paySettleUp')->name('pay.settle.up.expense');
+    });
+
+
+    Route::prefix('/settle-groups')->controller(ExpenseController::class)->group(function () {
+        Route::get('groups/{group?}',  'groupList')->name('group.list.expense');
+        Route::get('groups/view/{group?}',  'groupView')->name('groups.view');
+        Route::post('settle-pay',[ExpenseController::class,'settleUp'])->name('group.settle.up');
+        
+        // Route::post('/pay/{expense}', 'paySettleUp')->name('pay.settle.up.expense');
+    });
+
+    Route::controller(ExpenseController::class)->group(function () {
+        // Expense Routes
+        Route::get('/pay-expense','createExpense')->name('create.expense');
+        Route::get('/get-expenses','getExpenses')->name('get.expense');
+        Route::post('/record-expense','recordExpense')->name('record.expense');
+    });
+
+});
 
 Route::fallback(function() {
     return view('pages/utility/404');

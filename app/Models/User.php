@@ -60,5 +60,17 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-  
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class,'user_group');
+    }
+
+    public function ownerGroups()
+    {
+        return $this->hasMany(Group::class, 'user_id');
+    }
+    // public function group()
+    // {
+    //     return $this->belongsTo(User::class);
+    // }
 }
