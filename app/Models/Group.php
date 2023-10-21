@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Group extends Model
 {
     use HasFactory;
+    protected $fillable = ['group_name','user_id'];
 
     public function members()
     {
@@ -23,6 +24,8 @@ class Group extends Model
     {
         return $this->hasMany(Expense::class, 'group_id');
     }
+
+
 
     public function settlements()
     {

@@ -150,6 +150,7 @@ class ExpenseController extends Controller
 
     public function recordExpense(Request $request)
     {
+        // dd($request->all());
       
         $request->validate([
             'title' => ['required'],
@@ -180,21 +181,19 @@ class ExpenseController extends Controller
                     'date' => $request->date,
                     'split_method' => $request->split_method,
                     'individual_amount' => $amountPerMember,
-                    'group_id' => null,
+                    'group_id' => $request->groupId,
                     'user_id' => \Auth::id(),
                     'description' => $request->additional_message,
 
                 ]);
                 foreach($friends as $friend)
                 {
-                    $expense->participants()->create(['user_id' => $friend]);
+                    $expense->participants()->create(['user_id' => $friend, 'amount' => $amountPerMember]);
                 }
                
             });
         }
 
-    
-        return to_route('get.expense');
-
+        return to_route('group.list.expense');
     }
 }

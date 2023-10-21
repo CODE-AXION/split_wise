@@ -1,6 +1,18 @@
 <x-app-layout>
     <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
      
+        
+ 
+            <!-- "Add Expense" button -->
+            <div class="flex items-start">
+                <div class="w-2/12 mx-auto">
+                    <h1>Group: {{$group->group_name}}</h1>
+                </div>
+                <div class="w-full p-4">
+                    <a href="{{ route('create.expense', ['groupId' => $group->id]) }}" class="text-white bg-blue-500 px-4 py-2 rounded-md">Add Expense</a>
+                </div>
+            </div>
+            <br/>
 
             <h1>Group: {{$group->group_name}}</h1>
             
@@ -69,7 +81,7 @@
                             @if (array_key_exists($payerName, $totalDebt) && array_key_exists($receiverName, $totalDebt))
                                 @php
                                     $totalDebt[$payerName] -= $settlementAmount;
-                                    $totalDebt[$receiverName] -= $settlementAmount;
+                                    $totalDebt[$receiverName] += $settlementAmount;
                                 @endphp
                             @endif
                     

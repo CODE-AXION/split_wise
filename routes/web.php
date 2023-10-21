@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FriendRequestController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExpenseController;
+
+use App\Http\Controllers\GroupController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -46,6 +48,14 @@ Route::middleware(['auth'])->group(function () {
         Route::post('settle-pay',[ExpenseController::class,'settleUp'])->name('group.settle.up');
         
         // Route::post('/pay/{expense}', 'paySettleUp')->name('pay.settle.up.expense');
+    });
+
+    Route::controller(GroupController::class)->group(function () {
+        // Create Group Routes
+        Route::get('/create-group', 'createGroup')->name('create.group');
+        Route::post('/save-group', 'saveGroup')->name('save.group');
+        Route::get('/group-lists', 'getGroup')->name('group.lists');
+       
     });
 
     Route::controller(ExpenseController::class)->group(function () {

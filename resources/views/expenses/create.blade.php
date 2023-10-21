@@ -4,6 +4,9 @@
      
             <form action="{{route('record.expense')}}" method="post">
                 @csrf   
+
+                <input type="hidden" name="groupId" value="{{ request('groupId') }}">
+
                 <div>
                     <x-input-label for="title" :value="'Title'" />
                     <x-text-input id="title" class="block mt-1 w-full" type="text" name="title" :value="old('title')"  autofocus autocomplete="username" />
