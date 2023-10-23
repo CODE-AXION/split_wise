@@ -6,7 +6,10 @@
             <!-- "Add Expense" button -->
             <div class="flex items-start">
                 <div class="w-2/12 mx-auto">
-                    <h1>Group: {{$group->group_name}}</h1>
+                    <h1>Group: {{$group->group_name}} |
+                         {{$group->getOwnerAmount($group->user_id)}}  
+                         {{-- {{\Auth::user()->ownerExpenseAmount($group->id)}} --}}
+                        </h1>
                 </div>
                 <div class="w-full p-4">
                     <a href="{{ route('create.expense', ['groupId' => $group->id]) }}" class="text-white bg-blue-500 px-4 py-2 rounded-md">Add Expense</a>
@@ -57,7 +60,11 @@
                 <div>
 
                     <div class="w-full p-2 rounded-md border bg-slate-800">
-                        @php
+
+                        @foreach ($friends as $friend)
+                            {{$friend->payer->name}} gave to {{$friend->receiver->name}}, {{$friend->amount}}
+                        @endforeach
+                        {{-- @php
                             $totalDebt = [];
                         @endphp
                     
@@ -77,7 +84,6 @@
                                 $settlementAmount = $settlement->amount;
                             @endphp
                     
-                            {{-- Update the debt after settlement --}}
                             @if (array_key_exists($payerName, $totalDebt) && array_key_exists($receiverName, $totalDebt))
                                 @php
                                     $totalDebt[$payerName] -= $settlementAmount;
@@ -88,10 +94,9 @@
                             <div>{{ $settlement->payer->name }} owes {{ $settlement->receiver->name }}: {{ $settlement->amount }}</div>
                         @endforeach
                     
-                        {{-- Display the updated debts --}}
                         @foreach ($totalDebt as $name => $debt)
                             <div>{{ $name }} owes {{ $debt }}</div>
-                        @endforeach
+                        @endforeach --}}
                     </div>
                     
 

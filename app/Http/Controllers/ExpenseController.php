@@ -74,7 +74,21 @@ class ExpenseController extends Controller
 
     public function groupView(Group $group)
     {
-        return view('groups.group-view')->with('group',$group);
+        
+        $friends = ExpenseSettlement::where('group_id',$group->id)->where('payer_id',\Auth::id())->get();
+        $debitedAmount = ExpenseSettlement::where('group_id',$group->id)->where('payer_id',\Auth::id())->sum('amount');
+        
+        $individualAmount =  $group->expenses()->sum('individual_amount');
+
+        $persons = [];
+        
+        // if($debitedAmount > $individualAmount)
+        // {
+        //     dd($debitedAmount - $individualAmount);
+        // }
+
+        // dd($debited);
+        return view('groups.group-view')->with('group',$group)->with('friends',$friends);
     } 
 
     public function settleUp(Request $request)

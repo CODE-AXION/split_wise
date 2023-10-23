@@ -73,4 +73,18 @@ class User extends Authenticatable
     // {
     //     return $this->belongsTo(User::class);
     // }
+
+    public function ownerExpenseAmount($id,$user_id)
+    {
+        // $members = $this->groups->where('id',$id)->where('user_id',$user_id)->first()->members->count(); 
+        
+        // var_dump($id);
+        
+        // var_dump($user_id);
+        $amount = $this->groups->where('id',$id)->where('user_id',$user_id)->first()->expenses()->sum('amount');
+        
+        return $amount;
+    }
+
+ 
 }

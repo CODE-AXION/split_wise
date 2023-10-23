@@ -25,7 +25,11 @@ class Group extends Model
         return $this->hasMany(Expense::class, 'group_id');
     }
 
-
+    public function getOwnerAmount($user_id)
+    {   
+        // dd($this->id,$user_id);
+        return $this->where('user_id',$user_id)->first()->owner->ownerExpenseAmount($this->id,$user_id);
+    }
 
     public function settlements()
     {
